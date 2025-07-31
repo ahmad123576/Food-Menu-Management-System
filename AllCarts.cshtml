@@ -1,0 +1,39 @@
+@model List<Food_Menu_Management_System.Models.Cart>
+@{
+    ViewData["Title"] = "All User Carts";
+    var users = ViewBag.Users as List<Microsoft.AspNetCore.Identity.IdentityUser>;
+}
+
+<h2>All User Carts</h2>
+
+@foreach (var cart in Model)
+{
+    var user = users.FirstOrDefault(u => u.Id == cart.UserId);
+    <div class="mb-4">
+        <h5>User: @(user?.Email ?? cart.UserId)</h5>
+        @if (cart.Items == null || !cart.Items.Any())
+        {
+            <div class="alert alert-info">Cart is empty.</div>
+        }
+        else
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in cart.Items)
+                {
+                    <tr>
+                        <td>@item.Product?.Name</td>
+                        <td>@item.Quantity</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    </div>
+}
